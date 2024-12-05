@@ -144,66 +144,47 @@
       <h2 class="text-3xl font-bold mb-6">Artikel Terbaru</h2>
       <div class="space-y-8">
         <!-- Single Blog Post -->
-        <div class="bg-white p-6 rounded-lg shadow-md">
-          <h3 class="text-2xl font-semibold text-blue-600">Judul artikel</h3>
-          <p class="text-gray-600 mt-2">Ditulis oleh <span class="font-semibold">Penulis 1</span> pada <span class="italic">18 November 2024</span>.</p>
-          <p class="mt-4 text-gray-700">
-            Artikel ini membahas ide dan pengalaman menarik tentang dunia penulisan...
-          </p>
-          <button class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">
-            Baca Selengkapnya
-          </button>
+        @foreach($artikelsBlog as $artikel)
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-2xl font-semibold text-blue-600">{{ $artikel->judul }}</h3>
+                <p class="text-gray-600 mt-2">
+                    Ditulis oleh <span class="font-semibold">{{ $artikel->penulis }}</span> pada <span class="italic">{{ \Carbon\Carbon::parse($artikel->created_at)->format('d F Y') }}</span>.
+                </p>
+                <p class="mt-4 text-gray-700">
+                    {{ Str::limit($artikel->isi_artikel, 150) }} <!-- Limit isi artikel agar tidak terlalu panjang -->
+                </p>
+                <a href="{{ route('artikel.show', $artikel->id) }}">
+                    <button class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">
+                        Baca Selengkapnya
+                    </button>
+                </a>
 
-          <!-- Comments Section -->
-          <div class="mt-8 border-t pt-6">
-            <h4 class="text-lg font-bold mb-4">Komentar</h4>
-            <div class="space-y-4">
-              <!-- Single Comment -->
-              <div class="bg-gray-100 p-4 rounded-lg">
-                <p class="font-semibold">Komentator 1</p>
-                <p class="text-gray-600 mt-2">Artikel ini sangat menginspirasi! Terima kasih sudah berbagi.</p>
-              </div>
-              <!-- Add Comment -->
-              <form class="mt-6">
-                <textarea class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none" rows="3" placeholder="Tulis komentar Anda..."></textarea>
-                <button type="submit" class="mt-3 px-6 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">
-                  Kirim Komentar
-                </button>
-              </form>
+                <!-- Comments Section -->
+                <div class="mt-8 border-t pt-6">
+                    <h4 class="text-lg font-bold mb-4">Komentar</h4>
+                    <div class="space-y-4">
+                        <!-- Single Comment -->
+                        @foreach($artikel->komentar as $komentar)
+                            <div class="bg-gray-100 p-4 rounded-lg">
+                                <p class="font-semibold">Komentator</p>
+                                <p class="text-gray-600 mt-2">{{ $komentar->isi_komentar }}</p>
+                            </div>
+                        @endforeach
+                        <!-- Add Comment -->
+                        <form action="{{ route('komentar.store', $artikel->id) }}" method="POST" class="mt-6">
+                            @csrf
+                            <textarea class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none" rows="3" name="isi_komentar" placeholder="Tulis komentar Anda..."></textarea>
+                            <button type="submit" class="mt-3 px-6 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">
+                                Kirim Komentar
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
+        @endforeach
 
         <!-- Another Blog Post -->
-        <div class="bg-white p-6 rounded-lg shadow-md">
-          <h3 class="text-2xl font-semibold text-blue-600">Judul Artikel 2</h3>
-          <p class="text-gray-600 mt-2">Ditulis oleh <span class="font-semibold">Penulis 2</span> pada <span class="italic">17 November 2024</span>.</p>
-          <p class="mt-4 text-gray-700">
-            Cerita ini menggambarkan pengalaman hidup yang penuh makna dan pelajaran...
-          </p>
-          <button class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">
-            Baca Selengkapnya
-          </button>
 
-          <!-- Comments Section -->
-          <div class="mt-8 border-t pt-6">
-            <h4 class="text-lg font-bold mb-4">Komentar</h4>
-            <div class="space-y-4">
-              <!-- Single Comment -->
-              <div class="bg-gray-100 p-4 rounded-lg">
-                <p class="font-semibold">Komentator 2</p>
-                <p class="text-gray-600 mt-2">Sungguh cerita yang menyentuh! Sangat relevan dengan situasi saya saat ini.</p>
-              </div>
-              <!-- Add Comment -->
-              <form class="mt-6">
-                <textarea class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none" rows="3" placeholder="Tulis komentar Anda..."></textarea>
-                <button type="submit" class="mt-3 px-6 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">
-                  Kirim Komentar
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </section>

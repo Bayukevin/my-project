@@ -6,7 +6,7 @@
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <title>Halaman Home</title>
+    <title>Halaman Detail Artikel</title>
 </head>
 <body class="h-full">
 <div class="min-h-full">
@@ -15,7 +15,7 @@
       <div class="flex h-16 items-center justify-between">
         <div class="flex items-center">
           <div class="shrink-0">
-            <img class="size-8" src="img/logo_unspoken.png" alt="logo">
+            <img class="size-8" src="{{ asset('img/logo_unspoken.png') }}" alt="logo">
           </div>
           <div class="hidden md:block">
             <div class="ml-10 flex items-baseline space-x-4">
@@ -123,54 +123,47 @@
 
   <header class="bg-white shadow">
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-      <h1 class="text-3xl font-bold tracking-tight text-gray-900">Welcome to UnSpoken</h1>
+      <h1 class="text-3xl font-bold tracking-tight text-gray-900">Detail Artikel</h1>
     </div>
   </header>
   <main>
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-      <!-- Your content -->
-       <div class="min-h-screen bg-gray-50 text-gray-800">
+      <!--content -->
+      <div class="min-h-screen bg-gray-50 text-gray-800">
   <!-- Hero Section -->
   <section class="bg-blue-600 text-white py-16 px-8 text-center">
     <div class="max-w-4xl mx-auto">
-      <h1 class="text-4xl md:text-6xl font-bold">Tulis, Ekspresikan, Bagikan</h1>
-      <p class="mt-4 text-lg md:text-xl">Platform untuk menulis dan membagikan karya tulis fiksi maupun non-fiksi. Temukan inspirasi dan komunitas yang mendukung kreativitasmu.</p>
-      <a href="add-project">
-          <button class="mt-6 px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg shadow hover:bg-gray-100 transition">
-            Mulai Menulis
-          </button>
-      </a>
+      <h1 class="text-4xl md:text-5xl font-bold">{{ $artikel->judul }}</h1>
+      <p class="mt-4 text-lg md:text-xl">{{ $artikel->sub_judul }}</p>
+      <p class="mt-4 text-lg md:text-xl">Ditulis Oleh: {{ $artikel->penulis }}</p>
     </div>
   </section>
 
-
-  <!-- rekomendasi -->
+  <!-- Author Profile Section -->
   <section class="py-16 px-8">
-    <div class="max-w-6xl mx-auto">
-      <h2 class="text-3xl font-bold mb-6 text-center">Rekomendasi Karya Tulis</h2>
-      <p class="text-gray-600 text-center mb-12">Nikmati karya-karya terbaik yang telah dipublikasikan oleh komunitas kami, mulai dari cerita fiksi hingga esai non-fiksi yang inspiratif.</p>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-        <!-- Single Work -->
-        @foreach($artikels as $artikel)
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    @if($artikel->images)
-                        <img src="{{ asset('storage/' . $artikel->images) }}" alt="Karya" class="w-full h-40 object-cover rounded-lg">
-                    @else
-                        <img src="https://i.pinimg.com/736x/b2/45/10/b24510a42235edcc97ea49f9e93ddefc.jpg" alt="Karya" class="w-full h-40 object-cover rounded-lg">
-                    @endif
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
+        <div class="">
+            <!-- Profile Picture -->
+            @if($artikel->images)
+                <img src="{{ asset('storage/' . $artikel->images) }}" alt="Foto Artikel" class="w-full h-80 object-cover rounded-lg shadow-md">
+            @else
+                <img src="https://i.pinimg.com/736x/b2/45/10/b24510a42235edcc97ea49f9e93ddefc.jpg" alt="Gambar Default" class="w-full h-80 object-cover rounded-lg shadow-md">
+            @endif
 
-                    <h3 class="text-lg font-semibold mt-4">{{ $artikel->judul }}</h3>
-                    <p class="text-gray-600 mt-2">{{ $artikel->sub_judul }}</p>
-
-                    <a href="{{ route('artikel.show', $artikel->id) }}" class="mt-4 inline-block text-blue-600 hover:underline">Baca Selengkapnya</a>
-                </div>
-            @endforeach
-
-      </div>
+            <!-- Artikel Isi -->
+            <div class="mt-6">
+                <p class="text-gray-600 mt-2">{{ $artikel->isi_artikel }}</p>
+            </div>
+        </div>
     </div>
-  </section>
-</div>
+</section>
 
+  <!-- Published Works Section -->
+
+
+  <!-- Contact Form -->
+
+</div>
 
 </body>
 </html>

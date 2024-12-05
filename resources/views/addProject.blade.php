@@ -6,7 +6,7 @@
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <title>Halaman Home</title>
+    <title>Halaman Membuat Artikel</title>
 </head>
 <body class="h-full">
 <div class="min-h-full">
@@ -123,7 +123,7 @@
 
   <header class="bg-white shadow">
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-      <h1 class="text-3xl font-bold tracking-tight text-gray-900">Welcome to UnSpoken</h1>
+      <h1 class="text-3xl font-bold tracking-tight text-gray-900">Buat Artikel</h1>
     </div>
   </header>
   <main>
@@ -185,18 +185,13 @@
         </div>
 
         <div class="space-x-4">
-          <button type="reset" class="px-6 py-2 bg-red-600 text-white rounded-md shadow hover:bg-red-700 transition focus:outline-none">Batal</button>
+          <button type="reset" class="px-6 py-2 bg-red-600 text-white rounded-md shadow hover:bg-red-700 transition focus:outline-none" onclick="window.history.back()">Batal</button>
           <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none">Simpan</button>
         </div>
       </form>
     </div>
 </section>
-
-
-
-
 </div>
-
 
 </body>
 </html>

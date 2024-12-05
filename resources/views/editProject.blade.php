@@ -6,7 +6,7 @@
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <title>Halaman Home</title>
+    <title>Halaman Edit Artikel</title>
 </head>
 <body class="h-full">
 <div class="min-h-full">
@@ -123,54 +123,79 @@
 
   <header class="bg-white shadow">
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-      <h1 class="text-3xl font-bold tracking-tight text-gray-900">Welcome to UnSpoken</h1>
+      <h1 class="text-3xl font-bold tracking-tight text-gray-900">Edit Artikel</h1>
     </div>
   </header>
   <main>
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
       <!-- Your content -->
        <div class="min-h-screen bg-gray-50 text-gray-800">
-  <!-- Hero Section -->
-  <section class="bg-blue-600 text-white py-16 px-8 text-center">
-    <div class="max-w-4xl mx-auto">
-      <h1 class="text-4xl md:text-6xl font-bold">Tulis, Ekspresikan, Bagikan</h1>
-      <p class="mt-4 text-lg md:text-xl">Platform untuk menulis dan membagikan karya tulis fiksi maupun non-fiksi. Temukan inspirasi dan komunitas yang mendukung kreativitasmu.</p>
-      <a href="add-project">
-          <button class="mt-6 px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg shadow hover:bg-gray-100 transition">
-            Mulai Menulis
-          </button>
-      </a>
-    </div>
-  </section>
+
 
 
   <!-- rekomendasi -->
   <section class="py-16 px-8">
     <div class="max-w-6xl mx-auto">
-      <h2 class="text-3xl font-bold mb-6 text-center">Rekomendasi Karya Tulis</h2>
-      <p class="text-gray-600 text-center mb-12">Nikmati karya-karya terbaik yang telah dipublikasikan oleh komunitas kami, mulai dari cerita fiksi hingga esai non-fiksi yang inspiratif.</p>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-        <!-- Single Work -->
-        @foreach($artikels as $artikel)
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    @if($artikel->images)
-                        <img src="{{ asset('storage/' . $artikel->images) }}" alt="Karya" class="w-full h-40 object-cover rounded-lg">
-                    @else
-                        <img src="https://i.pinimg.com/736x/b2/45/10/b24510a42235edcc97ea49f9e93ddefc.jpg" alt="Karya" class="w-full h-40 object-cover rounded-lg">
-                    @endif
+      <h2 class="text-3xl font-bold mb-6 text-center">Form Edit Artikel</h2>
+      <p class="text-gray-600 text-center mb-12">Edit form artikel Anda Disini</p>
 
-                    <h3 class="text-lg font-semibold mt-4">{{ $artikel->judul }}</h3>
-                    <p class="text-gray-600 mt-2">{{ $artikel->sub_judul }}</p>
+      <!-- Form -->
+      <form action="{{ route('artikel.update', $artikel->id) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
 
-                    <a href="{{ route('artikel.show', $artikel->id) }}" class="mt-4 inline-block text-blue-600 hover:underline">Baca Selengkapnya</a>
-                </div>
-            @endforeach
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            <!-- Input Group for Judul -->
+            <div class="mb-6 col-span-1">
+                <label for="judul" class="block text-gray-700 font-semibold mb-2">Judul</label>
+                <input type="text" name="judul" id="judul" class="w-full p-3 bg-gray-100 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500" required value="{{ old('judul', $artikel->judul) }}" />
+            </div>
 
-      </div>
+            <!-- Input Group for Sub Judul -->
+            <div class="mb-6 col-span-1">
+                <label for="sub_judul" class="block text-gray-700 font-semibold mb-2">Sub Judul</label>
+                <input type="text" name="sub_judul" id="sub_judul" class="w-full p-3 bg-gray-100 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500" required value="{{ old('sub_judul', $artikel->sub_judul) }}" />
+            </div>
+
+            <!-- Input Group for Penulis -->
+            <div class="mb-6 col-span-1">
+                <label for="penulis" class="block text-gray-700 font-semibold mb-2">Penulis</label>
+                <input type="text" name="penulis" id="penulis" class="w-full p-3 bg-gray-100 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500" required value="{{ old('penulis', $artikel->penulis) }}" />
+            </div>
+
+            <!-- Input Group for Gambar -->
+            <div class="mb-6 col-span-1">
+                <label for="images" class="block text-gray-700 font-semibold mb-2">Gambar</label>
+                <input type="file" name="images" id="images" class="w-full p-3 bg-gray-100 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                @if($artikel->images)
+                    <img src="{{ asset('storage/' . $artikel->images) }}" alt="Current Image" class="mt-2 w-32">
+                @endif
+            </div>
+        </div>
+
+        <div class="mb-6 col-span-2">
+            <label for="status" class="block text-gray-700 font-semibold mb-2">Status</label>
+            <select name="status" id="status" class="w-full p-3 bg-gray-100 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                <option value="private" {{ $artikel->status == 'private' ? 'selected' : '' }}>Private</option>
+                <option value="publish" {{ $artikel->status == 'publish' ? 'selected' : '' }}>Publish</option>
+            </select>
+        </div>
+
+        <!-- Isi Artikel -->
+        <div class="mb-6 col-span-2">
+            <label for="isi_artikel" class="block text-gray-700 font-semibold mb-2">Isi Artikel</label>
+            <textarea name="isi_artikel" id="isi_artikel" rows="6" class="w-full p-3 bg-gray-100 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500" required>{{ old('isi_artikel', $artikel->isi_artikel) }}</textarea>
+        </div>
+
+        <div class="space-x-4">
+            <button type="reset" class="px-6 py-2 bg-red-600 text-white rounded-md shadow hover:bg-red-700 transition focus:outline-none" onclick="window.history.back()">Batal</button>
+            <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none">Simpan</button>
+        </div>
+    </form>
+
     </div>
-  </section>
+</section>
+
 </div>
-
-
 </body>
 </html>

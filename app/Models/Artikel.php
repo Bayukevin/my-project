@@ -19,4 +19,9 @@ class Artikel extends Model
         'status',
         'isi_artikel',
     ];
+
+    public function komentar()
+    {
+        return $this->hasMany(Komentar::class);
+    }
 }

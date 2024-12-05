@@ -6,6 +6,7 @@
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Halaman Project</title>
 </head>
 <body class="h-full">
@@ -153,13 +154,13 @@
                     <h3 class="text-lg font-semibold mt-4">{{ $artikel->judul }}</h3>
                     <p class="text-gray-600 mt-2">{{ $artikel->sub_judul }}</p>
                     <div class="mt-4 flex justify-between items-center">
-                        <a href="" class="px-4 py-2 bg-yellow-500 text-white rounded-lg shadow hover:bg-yellow-600 transition">
+                        <a href="{{ route('artikel.edit', $artikel->id) }}" class="px-4 py-2 bg-yellow-500 text-white rounded-lg shadow hover:bg-yellow-600 transition">
                             Edit
                         </a>
-                        <form action="" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus artikel ini?');">
+                        <form action="{{ route('artikel.destroy', $artikel->id) }}" method="POST" id="delete-form-{{ $artikel->id }}" class="inline-block">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg shadow hover:bg-red-700 transition">
+                            <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg shadow hover:bg-red-700 transition" onclick="event.preventDefault(); confirmDelete({{ $artikel->id }})">
                                 Hapus
                             </button>
                         </form>
@@ -180,15 +181,22 @@
                 <h3 class="text-lg font-semibold mt-4">{{ $artikel->judul }}</h3>
                 <p class="text-gray-600 mt-2">{{ $artikel->sub_judul }}</p>
                 <div class="mt-4 flex justify-between items-center">
-                    <button class="px-4 py-2 bg-yellow-500 text-white rounded-lg shadow hover:bg-yellow-600 transition">
-                    Edit
-                    </button>
-                    <button class="px-4 py-2 bg-red-600 text-white rounded-lg shadow hover:bg-red-700 transition">
-                    Hapus
-                    </button>
-                    <button class="px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition">
-                    Publikasikan
-                    </button>
+                    <a href="{{ route('artikel.edit', $artikel->id) }}" class="px-4 py-2 bg-yellow-500 text-white rounded-lg shadow hover:bg-yellow-600 transition">
+                        Edit
+                    </a>
+                    <form action="{{ route('artikel.destroy', $artikel->id) }}" method="POST" id="delete-form-{{ $artikel->id }}" class="inline-block">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg shadow hover:bg-red-700 transition" onclick="event.preventDefault(); confirmDelete({{ $artikel->id }})">
+                            Hapus
+                        </button>
+                    </form>
+                    <form action="{{ route('artikel.publish', $artikel->id) }}" method="POST" class="inline-block">
+                        @csrf
+                        <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition">
+                            Publikasikan
+                        </button>
+                    </form>
                 </div>
                 </div>
             @endforeach
@@ -198,6 +206,22 @@
     </div>
   </section>
 </div>
-
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Artikel ini akan dihapus secara permanen!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
+    </script>
 </body>
 </html>
